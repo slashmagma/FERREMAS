@@ -17,16 +17,18 @@ def singup(request):
         })
         
     else:
-      if request.POST['password1'] == request.POST['password2']:
-      #registra usario
-          user = User.objects.create_user(
-          username=request.POST['username'],
-          password=request.POST['password1'],)
-          user.save()
-          
-      
-    return HttpResponse('password no coinciden')
+        if request.POST['password1'] == request.POST['password2']:
+        #registra usario
+            try:
+                user = User.objects.create_user(
+                username=request.POST['username'],
+                password=request.POST['password1'],)
+                user.save()
+                return  HttpResponse('usuario creado')
+            except:
+                return HttpResponse('usuario ya existe')
+        return HttpResponse('password no coinciden')
 
 
    
-    
+     
