@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.contrib.auth import login
 
 
 # Create your views here.
@@ -24,10 +25,21 @@ def singup(request):
                 username=request.POST['username'],
                 password=request.POST['password1'],)
                 user.save()
-                return  HttpResponse('usuario creado')
+                login(request, user)
+                return  redirect('Home')
             except:
-                return HttpResponse('usuario ya existe')
+              return render(request, 'singup.html', {
+                'form': UserCreationForm,
+                "error": 'El nombre de usuario ya existe'
+                })
+        return render(request, 'singup.html', {
+         'form': UserCreationForm,
+             "error": 'El pasword no coincide'
+            })
+            
         return HttpResponse('password no coinciden')
+    
+    
 
 
    
