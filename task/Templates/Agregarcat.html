@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<p>1</p>
+<form action="/Agregarcat/" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Agregar</button>
+{% endblock %}
