@@ -61,6 +61,9 @@ def singin(request):
 def crearcategoria(request):
     return render(request, 'Agregarcat.html')
 
+def nosotros(request):
+    return render(request, 'nosotros.html')
+
 
    
      
