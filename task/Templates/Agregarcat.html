@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<p>1</p>
-<form action="/Agregarcat/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button>Agregar</button>
+    <p>1</p>
+    {{error}}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ Form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+
+
 {% endblock %}

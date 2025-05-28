@@ -1,0 +1,26 @@
+{% block content %}
+
+<h1>Carrito de Compras</h1>
+
+{% if request.session.carrito.items %}
+{% for key, value in request.session.carrito.items %}
+<tr>
+    <td>{{value.nombreart}}</td>
+</tr>
+    
+   {% if value.nombre_cat %}
+    <a href="{% url 'mas' value.nombre_cat value.nombreart %}"  class="btn btn-primary">Agregar más</a>
+    {% endif %}
+    <a href="{% url 'menos' key %}" class="btn btn-danger">-</a>
+   
+{% endfor %}
+{% else %}
+    <p>Tu carrito está vacío.</p>
+{% endif %}
+<tr>
+    <th scope="row">Total:</th>
+    <td colspan="2">$ {{total_factura}}</td>
+</tr>
+<a href="{% url 'cln' %}" class="btn btn-danger">Eliminar todos</a>
+<a href="#" class="btn btn-success">pagar</a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ articulo.nombreart }}</h1>
+
+      
+            
+  {% if articulo.imagen %}
+            <img src="{{ articulo.imagen.url }}" alt="Imagen de la categoría">
+        {% else %}
+            <p>No hay imagen disponible</p>
+        {% endif %}
+        <p> {{ Articulo.descripcion }} </p>
+        <form action="{% url 'eliminar_art' articulo.nombrecat %}" method="POST">
+            {% csrf_token %}
+            <p>¿Estás seguro de que quieres eliminar este articulo?</p>
+            <button>
+                Eliminar categoria
+            </button>
+        </form>
+            
+
+    
+   
+
+
+
+{% endblock %}

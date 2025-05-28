@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+ <h1>{{ categoria.nombrecat }}</h1>
+
+  
+        {% if categoria.imagen %}
+            <img src="{{ categoria.imagen.url }}" alt="Imagen de la categoría">
+        {% else %}
+            <p>No hay imagen disponible</p>
+        {% endif %}
+        <p> {{ categoria.descripcion }} </p>
+        <form action="{% url 'eliminar_cat' categoria.nombrecat %}" method="POST">
+            {% csrf_token %}
+            <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
+            <button>
+                Eliminar categoria
+            </button>
+        </form>
+        #  #
+        <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET">
+            {% if articulo.nombreart %}
+                <a href="{% url 'mas' articulo_nombreart.nombreart %}">Agregar</a>
+            {% else %}
+                <span>Nombre de artículo no disponible</span>
+            {% endif %}
+            
+
+            <p>si</p>
+            <button>Agregar artículo</button>
+        </form>
+
+        # #
+        <ul>
+            {% for articulo in Articulos %}
+                <li>
+                    <a href="{% url 'detalle_Articulos' articulo.Tipo articulo.nombreart %}">
+                        <p>{{ articulo.nombreart }}</p>
+                        {% if articulo.imagen %}
+                            <img src="{{ articulo.imagen.url }}" alt="Imagen del artículo" width="200">
+                        {% else %}
+                            <p>No hay imagen disponible</p>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+{% endblock %}

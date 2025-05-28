@@ -17,12 +17,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from task import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.Home, name='Home'),
+    path('Home/',views.Home, name='Home'),
+    path('',views.singin, name='singin2'),
     path('singup/',views.singup, name='singup'),
     path('logout/',views.signout, name='logout'),
     path('singin/',views.singin, name='singin'),
-    path('añadir/Categorias/',views.crearcategoria, name='Agregarcat'),
+    path('<str:nombre_cat>/Articulos/añadir/', views.crear_articulo, name='Agregarart'),
+    path('Categorias/<str:nombre_cat>/<str:nombre_art>/',views.detalle_Articulo, name='detalle_Articulos'),
+    path('Categorias/añadir/',views.crear_categoria, name='Agregarcat'),
+    path('Categorias/<str:nombre_cat>/',views.detalle_categoria, name='detalle_categorias'),
+    path('Categorias/<str:nombre_cat>/eliminar',views.eliminar_categoria, name='eliminar_cat'),
+    path('Categorias/<str:nombre_cat>/<str:nombre_art>/eliminar', views.eliminar_articulo, name='eliminar_art'),
+    path('Categorias/',views.lista_categoria, name='categorias'),
+    path('Home/carrito',views.carrito, name='carrito'),
+    path('añadir/<str:nombre_cat>/<str:nombre_art>/', views.añadir_carrito, name='mas'),
+    path('eliminar/',views.eliminar_carrito, name='cln'),
+    path('restar/<str:articulo_nom>',views.restar_articulo, name='menos'),
+    
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

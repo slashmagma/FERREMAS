@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import articulo, categoria
+from .models import articulo, Categoria
 # Register your models here.
 admin.site.register(articulo)
-admin.site.register(categoria)
+admin.site.register(Categoria)

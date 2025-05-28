@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>1</h1>
+    <ul>
+        {% for Categoria in categorias %}
+        <li>
+            <a href="{% url 'detalle_categorias' Categoria.nombrecat %}">
+                 <p>{{ Categoria.nombrecat }}</p>
+                {% if Categoria.imagen %}
+                    <img src="{{ Categoria.imagen.url }}" alt="Imagen de la categoría" width="200">
+                {% else %}
+                    <p>No hay imagen disponible</p>
+                {% endif %}
+            
+            </a>
+            
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
