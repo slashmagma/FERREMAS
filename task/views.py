@@ -143,6 +143,9 @@ def eliminar_articulo(request, nombre_cat, nombre_art):
         Articulo.delete()
         return redirect('detalle_categorias', nombre_cat=nombre_cat)
 
+def nosotros(request):
+    return render(request, 'nosotros.html')
+
 
 
 def añadir_carrito(request, nombre_cat, nombre_art,articulo_nom):
