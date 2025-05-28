@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <br><br>
 
-<!-- Contenedor general -->
+
 <div class="container">
 
-  <!-- Card principal -->
-  <div class="card text-white border-0 position-relative mb-5 principal-card">
+  <!-- Card grande -->
+  <div class="card border-0 position-relative mb-5 principal-card rounded-card">
   <img src="{% static 'fotos/principal3.png' %}" class="card-img" alt="...">
   <div class="card-img-overlay d-flex flex-column justify-content-start align-items-end p-4">
 
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-  <!-- Cards inferiores -->
+  <!-- Cards 1 -->
   <div class="row row-cols-1 row-cols-md-3 g-4 px-2">
     <div class="col">
       <a href="https://ejemplo.com/pagina1" class="custom-card d-block">
@@ -40,7 +40,7 @@
         </div>
       </a>
     </div>
-
+    <!-- Cards 2 -->
     <div class="col">
       <a href="https://ejemplo.com/pagina2" class="custom-card d-block">
         <img src="{% static 'fotos/herramientas.png' %}" alt="herramientas">
@@ -49,7 +49,7 @@
         </div>
       </a>
     </div>
-
+    <!-- Cards 3 -->
     <div class="col">
       <a href="https://ejemplo.com/pagina3" class="custom-card d-block">
         <img src="{% static 'fotos/Cocinas.png' %}" alt="cocina">
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-</div> <!-- /container -->
+</div> 
 
 <br><br><br>
 {% endblock %}
