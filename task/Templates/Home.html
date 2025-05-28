@@ -3,5 +3,64 @@
 
 
 {% block body %}
-    <p>Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO</p>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<br><br>
+
+<!-- Contenedor general -->
+<div class="container">
+
+  <!-- Card principal -->
+  <div class="card text-white border-0 position-relative mb-5 principal-card">
+  <img src="{% static 'fotos/principal3.png' %}" class="card-img" alt="...">
+  <div class="card-img-overlay d-flex flex-column justify-content-start align-items-end p-4">
+
+    <div class="text-end text-cafe">
+      <h1 class="card-title">
+        Más de 1 millón<br>
+        de productos para<br>
+        construir tus sueños
+      </h1>
+      <p class="card-text">Explora nuestro catálogo para encontrar todo lo que necesitas.</p>
+    </div>
+
+    <div class="mt-auto text-end">
+      <button class="btn btn-light">VER MÁS</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- Cards inferiores -->
+  <div class="row row-cols-1 row-cols-md-3 g-4 px-2">
+    <div class="col">
+      <a href="https://ejemplo.com/pagina1" class="custom-card d-block">
+        <img src="{% static 'fotos/construccion.png' %}" alt="Construcción">
+        <div class="card-text-overlay">
+          <h5 class="mb-0">Materiales</h5>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a href="https://ejemplo.com/pagina2" class="custom-card d-block">
+        <img src="{% static 'fotos/herramientas.png' %}" alt="herramientas">
+        <div class="card-text-overlay">
+          <h5 class="mb-0">Herramientas</h5>
+        </div>
+      </a>
+    </div>
+
+    <div class="col">
+      <a href="https://ejemplo.com/pagina3" class="custom-card d-block">
+        <img src="{% static 'fotos/Cocinas.png' %}" alt="cocina">
+        <div class="card-text-overlay">
+          <h5 class="mb-0">Cocinas</h5>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div> <!-- /container -->
+
+<br><br><br>
 {% endblock %}

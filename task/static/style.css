@@ -1,5 +1,58 @@
 body {
-  background-color: #e0b36e;
+  background-color: #f7ebdd;
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.custom-card {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+  }
+
+  .custom-card img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .custom-card .card-text-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6); /* semitransparente negro */
+    padding: 10px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .card-img-overlay h1,
+  .card-img-overlay p {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  }
+
+  .text-cafe {
+  color: #6f4e37;
+  }
+
+  .card-title,
+  .card-text {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* mejora contraste sobre imagen */
+  }
+
+  .principal-card {
+  width: 200px;
+
+}
+
