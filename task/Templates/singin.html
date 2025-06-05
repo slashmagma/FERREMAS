@@ -1,15 +1,33 @@
-
-
 {% block content %}
-{{error}}
-<form action="/singin/" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button> singin</button>
-</form>
-<a href="/singup/">
-    <button>
-        singup
-    </button>
-</a>
+<div class="auth-background">
+  <a href="{% url 'Home' %}" class="back-button">
+    ← Volver
+  </a>
+  <div class="auth-container">
+
+    <!-- Formulario de login -->
+    <div class="auth-box">
+      <h2 class="auth-form-title">Iniciar Sesión</h2>
+
+      {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" action="/singin/">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary auth-button">Entrar</button>
+      </form>
+    </div>
+
+    <!-- Sección derecha con botón para ir a crear cuenta -->
+    <div class="auth-box d-flex flex-column justify-content-center align-items-center border-start">
+      <p class="text-center">¿No tienes una cuenta?</p>
+      <a href="/singup/">
+        <button class="auth-switch">Crear Cuenta</button>
+      </a>
+    </div>
+
+  </div>
+</div>
 {% endblock %}
