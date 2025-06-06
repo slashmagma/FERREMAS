@@ -119,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
-LOGIN_URL = 'singin2'
+
 STATICFILES_DIRS = [STATIC_DIR,]
 
 # Default primary key field type
