@@ -1,3 +1,5 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 {% block content %}
 <div class="auth-background">
     <a href="{% url 'Home' %}" class="back-button">
@@ -6,7 +8,7 @@
   <div class="auth-container">
 
     <!-- Sección izquierda con botón para ir al login -->
-    <div class="auth-box d-flex flex-column justify-content-center align-items-center border-end">
+    <div class="auth-box d-flex flex-column justify-content-center align-items-center border-end centered-box">
       <p class="text-center">¿Ya tienes una cuenta?</p>
       <a href="/singin/">
         <button class="auth-switch">Iniciar Sesión</button>
