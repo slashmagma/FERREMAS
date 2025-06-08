@@ -147,6 +147,7 @@ def nosotros(request):
 
 
 
+
 def añadir_carrito(request, nombre_cat, nombre_art,articulo_nom):
     carrito= Carrito(request)
     Articulo= articulo.objects.get(nombreart=articulo_nom, user=request.user)
