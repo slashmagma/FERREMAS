@@ -150,3 +150,45 @@ body {
   background-color: #7a4e2d;
   color: white;
 }
+
+/**/
+
+.auth-box.centered-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* centra verticalmente */
+  align-items: center;      /* centra horizontalmente */
+  text-align: center;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* espacio entre campos */
+}
+
+.auth-box form input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto; /* centrado horizontal */
+}
+
+.auth-box form button {
+  margin-top: 10px;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  background-color: #7a4e2d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-box form button:hover {
+  background-color: #5c3821;
+}

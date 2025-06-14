@@ -1,4 +1,8 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 {% block content %}
+
+
 <div class="auth-background">
   <a href="{% url 'Home' %}" class="back-button">
     ← Volver
@@ -16,12 +20,15 @@
       <form method="post" action="/singin/">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-primary auth-button">Entrar</button>
+        <a href="/Home/">
+          <button  class="btn btn-primary auth-button">Entrar</button>
+        </a>
+        
       </form>
     </div>
 
     <!-- Sección derecha con botón para ir a crear cuenta -->
-    <div class="auth-box d-flex flex-column justify-content-center align-items-center border-start">
+    <div class="auth-box d-flex flex-column justify-content-center align-items-center border-start centered-box">
       <p class="text-center">¿No tienes una cuenta?</p>
       <a href="/singup/">
         <button class="auth-switch">Crear Cuenta</button>

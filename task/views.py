@@ -43,7 +43,7 @@ def singup(request):
 @login_required          
 def signout(request):
     logout(request)
-    return redirect('singup')
+    return redirect('Home')
 
 def singin(request):
     if request.method == 'GET':
@@ -108,11 +108,11 @@ def crear_articulo(request, nombre_cat):
                 'Form': form,
                 'error': 'Categoría no encontrada'
             })
-@login_required
+
 def lista_categoria(request):
     categorias=Categoria.objects.all()
     return render(request, 'categorias.html', {'categorias': categorias})
-@login_required
+
 def detalle_categoria(request, nombre_cat):
     categoria = get_object_or_404(Categoria, nombrecat=nombre_cat)
     Articulos = articulo.objects.filter(Tipo=nombre_cat)
@@ -128,13 +128,15 @@ def eliminar_categoria(request, nombre_cat):
         categoria.delete()
         return redirect('categorias')
 
-@login_required
+
 def detalle_Articulo (request, nombre_cat, nombre_art):
-    Articulo = get_object_or_404(articulo, nombreart=nombre_art, user=request.user)
+    articulo_obj = get_object_or_404(articulo, nombreart=nombre_art, user=request.user)
+
     return render(request, 'detalle_articulos.html', {
-        'Articulo': Articulo,
-        'nombre_cat': nombre_cat
-    })
+    'articulo': articulo_obj,
+    'nombre_cat': nombre_cat
+})
+
 @login_required
 def eliminar_articulo(request, nombre_cat, nombre_art):
     Articulo = get_object_or_404(articulo, nombreart=nombre_art, user=request.user)
