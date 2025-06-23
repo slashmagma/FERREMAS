@@ -13,6 +13,8 @@ from .Forms import CustomAuthenticationForm #este es para poder personalizar el 
 
 
 
+
+
 def Home(request):
     return render(request, 'Home.html', {
         
@@ -150,17 +152,22 @@ def nosotros(request):
 
 
 
-def añadir_carrito(request, nombre_cat, nombre_art,articulo_nom):
+def añadir_carrito(request, nombre_cat, nombre_art):
     carrito= Carrito(request)
-    Articulo= articulo.objects.get(nombreart=articulo_nom, user=request.user)
+    Articulo= articulo.objects.get(nombreart=nombre_art, user=request.user)
     carrito.agregar(Articulo)
     return redirect('detalle_categorias', nombre_cat=nombre_cat)
 
+def mas(request, articulo_id):
+    carrito = Carrito(request)
+    art = articulo.objects.get(id=articulo_id, user=request.user)
+    carrito.agregar(art)
+    return redirect('carrito')
 
-def eliminar_carrito(request, articulo_nom):
+def eliminar_artcarro(request, articulo_id):
    carrito = Carrito(request)
-   Articulo = articulo.objects.get(nombreart = articulo_nom, user=request.user)
-   carrito.eliminar(Articulo)
+   art = articulo.objects.get(id=articulo_id, user=request.user)
+   carrito.eliminar(art)
    return redirect('carrito')
 
 def limpiarcarrito(request):
@@ -168,18 +175,18 @@ def limpiarcarrito(request):
     carrito.limpiar_carrito()
     return redirect('carrito')
 
-def restar_articulo(request, nombre_cat, nombre_art):
+def restar_articulo(request, articulo_id):
     carrito = Carrito(request)
-    Articulo = articulo.objects.get(nombreart=nombre_art, user=request.user)
-    carrito.eliminar_producto(Articulo)
-    return redirect('detalle_categorias', nombre_cat=nombre_cat)
+    art = articulo.objects.get(id=articulo_id, user=request.user)
+    carrito.eliminar_producto(art)
+    return redirect('carrito')
 
 def carrito(request):
     carrito_data = request.session.get('carrito', {})
     total = 0
 
     for key, item in carrito_data.items():
-        total += Decimal(item['valorunidad']) * item['cantidad']
+        total += Decimal(item['acumulado']) * item['cantidad']
         try:
             Articulo = get_object_or_404(articulo,nombreart=item['nombreart'])
             item['nombre_art'] = Articulo.nombreart 
