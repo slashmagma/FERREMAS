@@ -41,6 +41,7 @@ urlpatterns = [
     path('carrito/eliminar/<int:articulo_id>/',views.eliminar_artcarro, name='borrar'),
     path('carrito/restar/<int:articulo_id>/',views.restar_articulo, name='menos'),
     path('nosotros/', views.nosotros, name= 'nosotros'),
+    path('Perfil/', views.Perfil, name='Perfil'),
   
     
     

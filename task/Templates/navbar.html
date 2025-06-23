@@ -54,8 +54,8 @@
               <img src="{% static 'fotos/perfil.png' %}" alt="Perfil" class="rounded-circle user-icon">
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="{% url 'singin' %}"> cuenta </a></li>
-                <li><a class="dropdown-item" href="{% url 'singup' %}">Cerrar sesión</a></li>
+                <li><a class="dropdown-item" href="{% url 'Perfil' %}"> Perfil </a></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
               </ul>
           </div>
           {% else %}

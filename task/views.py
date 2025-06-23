@@ -149,6 +149,9 @@ def eliminar_articulo(request, nombre_cat, nombre_art):
 def nosotros(request):
     return render(request, 'nosotros.html')
 
+def Perfil(request):
+    return render(request, 'Perfil.html')
+
 
 
 
