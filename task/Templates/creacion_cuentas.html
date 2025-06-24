@@ -1,0 +1,31 @@
+{% extends 'navbar.html' %}
+
+{% block body %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<div class="auth-background">
+    
+  <div class="auth-container">
+
+    <!-- Sección izquierda con botón para ir al login -->
+  
+
+    <!-- Formulario de registro -->
+    <div class="auth-box">
+      <h2 class="auth-form-title">Crear Cuenta</h2>
+
+      {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form action="/singup/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary auth-button">crear</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

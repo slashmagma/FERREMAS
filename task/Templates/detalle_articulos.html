@@ -1,5 +1,7 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends 'navbar.html' %}
+
+{% block body %}
+<a href="{% url 'detalle_categorias' nombre_cat  %}" class="btn btn-primary">volver </a>
         <h1>{{ articulo.nombreart }}</h1>
 
     {% if articulo.imagen %}
@@ -12,15 +14,19 @@
         <form action="{% url 'eliminar_art' nombre_cat articulo.nombreart %}" method="POST">
             {% csrf_token %}
             <p>¿Estás seguro de que quieres eliminar este articulo?</p>
-            <button>
-                Eliminar articulo
-            </button>
+            {% if user.is_superuser or "@bodegero" in user.email %}
+                <button>
+                    Eliminar articulo
+                </button>
+            {% endif %}
         </form>
         <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn btn-primary">Agregar al carrito</a>
 
-    
-   
-
-
+    <p>precio por unidad: {{ articulo.valorunidad }}</p>
+    <p>cantidad restante: {{articulo.cantidad}}</p>
+    {% if user.is_superuser or "@bodegero" in user.email %}
+        <button><a href="{% url 'restar_art' nombre_cat articulo.nombreart %}" class="btn btn-secondary">Restar</a></button>
+        <a href="{% url 'añadir_art' nombre_cat articulo.nombreart %}" class="btn btn-secondary">Añadir</a>
+    {% endif %}
 
 {% endblock %}

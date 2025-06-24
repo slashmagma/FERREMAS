@@ -22,10 +22,10 @@ def Home(request):
 def singup(request):
     if request.method == 'GET':
         return render(request, 'singup.html', {
-            'form': CustomUserCreationForm()
+           'form': CustomUserCreationForm(request_user=request.user)
         })
     else:
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request_user=request.user)
         if form.is_valid():
             try:
                 user = form.save()
@@ -41,7 +41,29 @@ def singup(request):
                 'form': form,
                 "error": 'Las contraseñas no coinciden o el formulario no es válido'
             })
-            
+def crearcuenta(request):
+    if request.method == 'GET':
+        return render(request, 'creacion_cuentas.html', {
+           'form': CustomUserCreationForm(request_user=request.user)
+        })
+    else:
+        form = CustomUserCreationForm(request.POST, request_user=request.user)
+        if form.is_valid():
+            try:
+                user = form.save()
+                login(request, user)
+                return redirect('Home')
+            except:
+                return render(request, 'creacion_cuentas.html', {
+                    'form': CustomUserCreationForm(),
+                    "error": 'El nombre de usuario ya existe'
+                })
+        else:
+            return render(request, 'creacion_cuentas.html', {
+                'form': form,
+                "error": 'Las contraseñas no coinciden o el formulario no es válido'
+            })
+                     
 @login_required          
 def signout(request):
     logout(request)
@@ -132,12 +154,39 @@ def eliminar_categoria(request, nombre_cat):
 
 
 def detalle_Articulo (request, nombre_cat, nombre_art):
-    articulo_obj = get_object_or_404(articulo, nombreart=nombre_art, user=request.user)
+    articulo_obj = get_object_or_404(articulo, nombreart=nombre_art)
 
     return render(request, 'detalle_articulos.html', {
     'articulo': articulo_obj,
     'nombre_cat': nombre_cat
 })
+
+def restar_Articulo(request, nombre_cat, nombre_art):
+    try:
+        articulo_obj = articulo.objects.get(nombreart=nombre_art)
+        # Aquí va tu lógica para restar o modificar
+        # Por ejemplo:
+        if articulo_obj.cantidad > 0:
+            articulo_obj.cantidad -= 1
+            articulo_obj.save()
+        else:
+            articulo_obj.delete()
+        return redirect('detalle_Articulos', nombre_cat=nombre_cat, nombre_art=nombre_art)  # ← SIEMPRE devolver una respuesta
+    except articulo.DoesNotExist:
+        # Manejar el error si no se encuentra el artículo
+        return redirect('detalle_categorias', nombre_cat=nombre_cat) 
+
+def añadir_articulo(request, nombre_cat, nombre_art):
+    try:
+        articulo_obj = articulo.objects.get(nombreart=nombre_art)
+        # Aquí va tu lógica para añadir o modificar
+        # Por ejemplo:
+        articulo_obj.cantidad += 1
+        articulo_obj.save()
+        return redirect('detalle_Articulos', nombre_cat=nombre_cat, nombre_art=nombre_art)  # ← SIEMPRE devolver una respuesta
+    except articulo.DoesNotExist:
+        # Manejar el error si no se encuentra el artículo
+        return redirect('detalle_categorias', nombre_cat=nombre_cat)
 
 @login_required
 def eliminar_articulo(request, nombre_cat, nombre_art):
@@ -175,7 +224,7 @@ def limpiarcarrito(request):
     carrito.limpiar_carrito()
     return redirect('carrito')
 
-def restar_articulo(request, articulo_id):
+def restar_articulocarro(request, articulo_id):
     carrito = Carrito(request)
     art = articulo.objects.get(id=articulo_id, user=request.user)
     carrito.eliminar_producto(art)

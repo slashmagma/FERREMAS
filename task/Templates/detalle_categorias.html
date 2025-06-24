@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends 'navbar.html' %}
 
-{% block content %}
-
+{% block body %}
+<a href="{% url 'categorias'   %}" class="btn btn-primary">volver </a>
  <h1>{{ categoria.nombrecat }}</h1>
 
   
@@ -11,23 +11,18 @@
             <p>No hay imagen disponible</p>
         {% endif %}
         <p> {{ categoria.descripcion }} </p>
-        <form action="{% url 'eliminar_cat' categoria.nombrecat %}" method="POST">
-            {% csrf_token %}
-            <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
-            <button>
-                Eliminar categoria
-            </button>
-        </form>
+        {% if user.is_superuser %}
+            <form action="{% url 'eliminar_cat' categoria.nombrecat %}" method="POST">
+                {% csrf_token %}
+                <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
+                <button>
+                    Eliminar categoria
+                </button>
+            </form>
+        {% endif %}
         #  #
         <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET">
-            {% if articulo.nombreart %}
-                <a href="{% url 'mas' articulo_nombreart.nombreart %}">Agregar</a>
-            {% else %}
-                <span>Nombre de artículo no disponible</span>
-            {% endif %}
             
-
-            <p>si</p>
             <button>Agregar artículo</button>
         </form>
 
