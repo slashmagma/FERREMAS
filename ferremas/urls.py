@@ -44,5 +44,9 @@ urlpatterns = [
     path('Home/crear_cuenta/', views.crearcuenta, name='crearcuenta'),
     path('Home/Categorias/<str:nombre_cat>/<str:nombre_art>/restar', views.restar_Articulo, name='restar_art'),
     path('Home/Categorias/<str:nombre_cat>/<str:nombre_art>/añadir', views.añadir_articulo, name='añadir_art'),
+    path('Perfil/', views.Perfil, name='Perfil'),
+  
+    
+    
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
