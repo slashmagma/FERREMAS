@@ -1,0 +1,31 @@
+{% extends "navbar.html" %}
+{% block body %}
+<h1>Historial de Compras</h1>
+{% if compras %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Monto</th>
+                <th>Estado</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compra in compras %}
+            <tr>
+                <td>{{ compra.id }}</td>
+                <td>{{ compra.fecha }}</td>
+                <td>${{ compra.monto }}</td>
+                <td>{{ compra.estado }}</td>
+                <td><pre>{{ compra.detalle }}</pre></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No tienes compras registradas.</p>
+{% endif %}
+<a href="{% url 'Home' %}">Volver al inicio</a>
+{% endblock %}

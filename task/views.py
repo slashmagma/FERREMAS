@@ -1,11 +1,12 @@
 from decimal import Decimal
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from .Forms import CustomUserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from .Forms import CategoriaForm, ArticuloForm
-from .models import Categoria,articulo
+from .models import Categoria, Compra,articulo
 from django.contrib.auth.decorators import login_required
 from .Carrito import Carrito
 from .Forms import CustomAuthenticationForm
@@ -283,3 +284,48 @@ def pagar_webpay(request):
         "url_tbk": data.get("url"),
         "submit": "Pagar ahora"
     })
+
+
+@csrf_exempt
+@login_required
+def retorno(request):
+    if request.method == 'POST':
+        token_ws = request.POST.get('token_ws')
+        if not token_ws:
+            return render(request, 'webpay_retorno.html', {'mensaje': 'la transacción no se pudo completar.'})
+
+        headers = {
+            "Tbk-Api-Key-Id": "597055555532",
+            "Tbk-Api-Key-Secret": "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C",
+            "Content-Type": "application/json"
+        }
+        url = f"https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.0/transactions/{token_ws}"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            return render(request, 'webpay_retorno.html', {'mensaje': 'Error al consultar el estado del pago.'})
+
+        data = response.json()
+        estado = data.get('status', '').lower()
+
+        if estado in ['authorized', 'paid']:
+            # Guardar la compra
+            Compra.objects.create(
+                user=request.user,
+                monto=data.get('amount', 0),
+                estado='pagado',
+                detalle=str(data)  # o puedes guardar JSON si quieres
+            )
+            mensaje = 'Pago completado exitosamente. ¡Gracias por su compra!'
+        elif estado in ['voided', 'cancelled']:
+            mensaje = 'Pago cancelado.'
+        else:
+            mensaje = 'Procesando pago, por favor espere...'
+
+        return render(request, 'webpay_retorno.html', {'mensaje': mensaje})
+
+    return redirect('Home')
+@login_required
+def historial_compras(request):
+    compras = Compra.objects.filter(user=request.user).order_by('-fecha')
+    return render(request, 'historial_compras.html', {'compras': compras})

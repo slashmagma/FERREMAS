@@ -21,3 +21,11 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombrecat + ' - por ' + (self.user.username if self.user else 'Usuario desconocido')
+class Compra(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='compras', null=True, blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    estado = models.CharField(max_length=50)  # ejemplo: "pagado", "cancelado", "pendiente"
+    detalle = models.TextField(blank=True, null=True)  # opcional: JSON o texto con detalles
+    def __str__(self):
+        return f"Compra {self.id} por {self.user.username} - {self.fecha.strftime('%Y-%m-%d %H:%M:%S')}"
