@@ -46,6 +46,9 @@ urlpatterns = [
     path('Home/Categorias/<str:nombre_cat>/<str:nombre_art>/añadir', views.añadir_articulo, name='añadir_art'),
     path('Perfil/', views.Perfil, name='Perfil'),
     path('webpay/', views.pagar_webpay, name='pagar_webpay'),
+    path('webpay/retorno/', views.retorno, name='webpay_retorno'),
+    path('Home/historial/', views.historial_compras, name='historial_compras'),
+
 
   
     

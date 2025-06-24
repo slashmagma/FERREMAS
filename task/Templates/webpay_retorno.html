@@ -1,0 +1,20 @@
+{% load static %}
+{% block body %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Procesando Pago</title>
+    <meta http-equiv="refresh" content="5;url={% url 'Home' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20%;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ mensaje }}</h1>
+</body>
+</html>
+{% endblock %}
