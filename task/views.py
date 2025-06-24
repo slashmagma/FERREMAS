@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .Carrito import Carrito
 from .Forms import CustomAuthenticationForm
 import random 
-import requests
+#import requests
 #este es para poder personalizar el inicio de sesion de django
 # Create your views here.
 

@@ -1,49 +1,49 @@
 {% extends 'navbar.html' %}
-
+{% load static %}
 {% block body %}
-<a href="{% url 'categorias'   %}" class="btn btn-primary">volver </a>
- <h1>{{ categoria.nombrecat }}</h1>
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-  
-        {% if categoria.imagen %}
-            <img src="{{ categoria.imagen.url }}" alt="Imagen de la categoría">
-        {% else %}
-            <p>No hay imagen disponible</p>
-        {% endif %}
-        <p> {{ categoria.descripcion }} </p>
-        {% if user.is_superuser %}
-            <form action="{% url 'eliminar_cat' categoria.nombrecat %}" method="POST">
-                {% csrf_token %}
-                <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
-                <button>
-                    Eliminar categoria
-                </button>
-            </form>
-        {% endif %}
-        #  #
-        {% if user.is_superuser or "@bodegero" in user.email %}
-              <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET">
-            
-            <button>Agregar artículo</button>
-        </form>
-        {% endif %}
-       
+<a href="{% url 'categorias' %}" class="btn-back">← Volver</a>
 
-        # #
-        <ul>
-            {% for articulo in Articulos %}
-                <li>
-                    <a href="{% url 'detalle_Articulos' articulo.Tipo articulo.nombreart %}">
-                        <p>{{ articulo.nombreart }}</p>
-                        {% if articulo.imagen %}
-                            <img src="{{ articulo.imagen.url }}" alt="Imagen del artículo" width="200">
-                        {% else %}
-                            <p>No hay imagen disponible</p>
-                        {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
+<h1 class="categoria-titulo">{{ categoria.nombrecat }}</h1>
 
+<div class="imagen-categoria-container">
+    {% if categoria.imagen %}
+        <img src="{{ categoria.imagen.url }}" alt="Imagen de la categoría" class="imagen-categoria">
+    {% else %}
+        <p>No hay imagen disponible</p>
+    {% endif %}
+</div>
+
+<p class="categoria-descripcion">{{ categoria.descripcion }}</p>
+
+{% if user.is_superuser %}
+    <form action="{% url 'eliminar_cat' categoria.nombrecat %}" method="POST" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
+        <button>Eliminar categoría</button>
+    </form>
+{% endif %}
+
+{% if user.is_superuser or "@bodegero" in user.email %}
+    <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET" style="margin-bottom: 30px;">
+        <button>Agregar artículo</button>
+    </form>
+{% endif %}
+
+<div class="articulos-grid">
+    {% for articulo in Articulos %}
+        <div class="articulo-card">
+            <a href="{% url 'detalle_Articulos' articulo.Tipo articulo.nombreart %}">
+                <p>{{ articulo.nombreart }}</p>
+                {% if articulo.imagen %}
+                    <img src="{{ articulo.imagen.url }}" alt="Imagen del artículo" width="200">
+                {% else %}
+                    <p>No hay imagen disponible</p>
+                {% endif %}
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
