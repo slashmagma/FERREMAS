@@ -8,7 +8,10 @@ from .Forms import CategoriaForm, ArticuloForm
 from .models import Categoria,articulo
 from django.contrib.auth.decorators import login_required
 from .Carrito import Carrito
-from .Forms import CustomAuthenticationForm #este es para poder personalizar el inicio de sesion de django
+from .Forms import CustomAuthenticationForm
+import random 
+import requests
+#este es para poder personalizar el inicio de sesion de django
 # Create your views here.
 
 
@@ -248,4 +251,35 @@ def carrito(request):
     return render(request, 'carrito.html', {
         'Carrito': carrito_data,
         'total_factura': total
+    })
+    
+def pagar_webpay(request):
+    total = request.GET.get('monto', 15000)
+    buy_order = str(random.randint(10000, 99999))
+    session_id = str(random.randint(10000, 99999))
+    return_url = request.build_absolute_uri('/webpay/retorno/')
+
+    headers = {
+        "Tbk-Api-Key-Id": "597055555532",
+        "Tbk-Api-Key-Secret": "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "buy_order": buy_order,
+        "session_id": session_id,
+        "amount": int(total),
+        "return_url": return_url
+    }
+
+    response = requests.post(
+        "https://webpay3gint.transbank.cl/rswebpaytransaction/api/webpay/v1.0/transactions",
+        json=payload,
+        headers=headers
+    )
+    data = response.json()
+
+    return render(request, "webpay.html", {
+        "token": data.get("token"),
+        "url_tbk": data.get("url"),
+        "submit": "Pagar ahora"
     })

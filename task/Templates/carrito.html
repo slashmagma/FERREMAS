@@ -35,7 +35,7 @@
         <td colspan="2">$ {{total_factura}}</td>
     </tr>
     <a href="{% url 'cln' %}" class="btn btn-danger">Limpiar carrito</a>
-    <a href="#" class="btn btn-success">pagar</a>
+    <a href="{% url 'pagar_webpay' %}?monto={{ total_factura }}" class="btn btn-success">Pagar</a>
 </div>
 
 {% endblock %}

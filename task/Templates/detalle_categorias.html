@@ -21,10 +21,13 @@
             </form>
         {% endif %}
         #  #
-        <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET">
+        {% if user.is_superuser or "@bodegero" in user.email %}
+              <form action="{% url 'Agregarart' categoria.nombrecat %}" method="GET">
             
             <button>Agregar artículo</button>
         </form>
+        {% endif %}
+       
 
         # #
         <ul>
