@@ -1,25 +1,33 @@
 {% extends 'navbar.html' %}
-
+{% load static %}
 {% block body %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-    <h1>1</h1>
-    <ul>
-        {% for Categoria in categorias %}
-        <li>
-            <a href="{% url 'detalle_categorias' Categoria.nombrecat %}">
-                 <p>{{ Categoria.nombrecat }}</p>
+<a href="{% url 'Home' %}" class="btn-back">
+    ← Volver
+  </a>
+  
+<h1>Categorías</h1>
+
+<div class="categoria-grid">
+    {% for Categoria in categorias %}
+        <div class="categoria-card">
+            <a href="{% url 'detalle_categorias' Categoria.nombrecat %}" class="auth-form-title">
+                <p>{{ Categoria.nombrecat }}</p>
                 {% if Categoria.imagen %}
                     <img src="{{ Categoria.imagen.url }}" alt="Imagen de la categoría" width="200">
                 {% else %}
                     <p>No hay imagen disponible</p>
                 {% endif %}
-            
             </a>
-            
-        </li>
-        {% endfor %}
-    </ul>
-    {% if user.is_superuser %}
-    <button style="margin-bottom: 20px;"><a href="{% url 'Agregarcat' %}">Crear Categoria</a></button>
-    {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% if user.is_superuser %}
+    <div style="margin-top: 20px; text-align: center;">
+        <button><a href="{% url 'Agregarcat' %}">Crear Categoría</a></button>
+    </div>
+{% endif %}
+
 {% endblock %}

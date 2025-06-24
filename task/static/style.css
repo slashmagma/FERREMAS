@@ -192,3 +192,90 @@ body {
 .auth-box form button:hover {
   background-color: #5c3821;
 }
+
+
+
+/* configuracion del diseño de las categorias */
+
+.categoria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+    gap: 20px;
+    padding: 20px;
+}
+
+.categoria-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: transform 0.2s;
+}
+
+.categoria-card:hover {
+    transform: scale(1.03);
+}
+
+
+.btn-back {
+  font-weight: bold;
+  color: #7a4e2d;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+
+/* detalle de categoria diseño */
+
+.imagen-categoria-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.imagen-categoria {
+    width: 80%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.categoria-titulo {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2em;
+}
+
+.categoria-descripcion {
+    text-align: center;
+    margin: 20px auto;
+    width: 80%;
+    font-size: 1.2em;
+    color: #444;
+}
+
+.articulos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    padding: 20px;
+}
+
+.articulo-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f4f4f4;
+    transition: transform 0.2s;
+}
+
+.articulo-card:hover {
+    transform: scale(1.03);
+}
