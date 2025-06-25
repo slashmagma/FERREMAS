@@ -15,8 +15,6 @@
     <div class="carrito-header">
         <a href="{% url 'Home' %}" class="btn-back">← Volver</a>
     </div>
-    {{ user.username }}
-    {{ user.direccion}}
     {% if request.session.carrito.items %}
         <div class="carrito-items">
             {% for key, value in request.session.carrito.items %}
@@ -43,9 +41,13 @@
                 {% else %}
                     Sin dirección
                 {% endif %}
-                <button id="mostrarDireccionBtn" type="button">Añadir dirección</button>
-
+                {% if direccion_guardada %}
+                
+                <button id="mostrarDireccionBtn" type="button" class="btn-accion azul">editar dirección</button>
+                {% else %}
+                    <button id="mostrarDireccionBtn" type="button" class="btn-accion-amarillo">Añadir dirección</button>
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
             
