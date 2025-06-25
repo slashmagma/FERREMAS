@@ -56,7 +56,17 @@ class Carrito:
             self.carrito[id]["cantidad"] -= 1
             self.carrito[id]["acumulado"] = float(articulo.valorunidad)
             if self.carrito[id]["cantidad"] <= 0: self.eliminar(articulo)
-            self.guardar_carrito()  
+            self.guardar_carrito() 
+    def eliminar_articulo(self, articulo):
+        id = str(articulo.id)
+        if id in self.carrito:
+            cantidad_carrito = self.carrito[id]["cantidad"]
+            
+            # Descontar stock y guardar en base de datos
+            articulo.cantidad = max(0, articulo.cantidad - cantidad_carrito)
+            articulo.save()
+
+            
     
     def limpiar_carrito(self):
         self.session["carrito"] = {}

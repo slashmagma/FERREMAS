@@ -49,6 +49,7 @@ urlpatterns = [
     path('webpay/retorno/', views.retorno, name='webpay_retorno'),
     path('Home/historial/', views.historial_compras, name='historial_compras'),
     path('guardar_direccion/', views.guardar_direccion, name='guardar_direccion'),
+    path('eliminar/<int:articulo_id>/', views.eliminar_articulocarro, name='eliminar'),
 
 
 

@@ -263,6 +263,7 @@ def pagar_webpay(request):
     buy_order = str(random.randint(10000, 99999))
     session_id = str(random.randint(10000, 99999))
     return_url = request.build_absolute_uri('/webpay/retorno/')
+    
 
     headers = {
         "Tbk-Api-Key-Id": "597055555532",
@@ -294,9 +295,9 @@ def pagar_webpay(request):
 
 def retorno(request):
     if request.method == 'POST':
-        token_ws = request.POST.get('token_ws')
+        token_ws = request.GET.get('token_ws') or request.POST.get('token_ws')
         if not token_ws:
-            return render(request, 'webpay_retorno.html', {'mensaje': 'la transacción no se pudo completar.'})
+            return render(request, 'webpay_retorno.html', {'mensaje': 'Token no recibido. Transacción no válida.'})
 
         headers = {
             "Tbk-Api-Key-Id": "597055555532",
@@ -313,22 +314,33 @@ def retorno(request):
         estado = data.get('status', '').lower()
 
         if estado in ['authorized', 'paid']:
-            # Guardar la compra
             Compra.objects.create(
                 user=request.user,
                 monto=data.get('amount', 0),
                 estado='pagado',
-                detalle=str(data)  
+                detalle=str(data)
             )
             mensaje = 'Pago completado exitosamente. ¡Gracias por su compra!'
         elif estado in ['voided', 'cancelled']:
             mensaje = 'Pago cancelado.'
         else:
+            carrito = Carrito(request)
+
+            for item in carrito.carrito.values():
+                try:
+                    prod = articulo.objects.get(id=item['articulo_id'])
+                    carrito.eliminar_articulo(prod)
+                except articulo.DoesNotExist:
+                    continue
+
             mensaje = 'Procesando pago, por favor espere...'
+            request.session["carrito"] = {}
+            request.session.modified = True
 
         return render(request, 'webpay_retorno.html', {'mensaje': mensaje})
 
     return redirect('Home')
+
 @login_required
 def historial_compras(request):
     compras = Compra.objects.filter(user=request.user).order_by('-fecha')
@@ -363,3 +375,8 @@ def guardar_direccion(request):
             messages.error(request, 'Faltan datos. No se pudo guardar la dirección.')
 
     return redirect('carrito')
+def eliminar_articulocarro(request, articulo_id):
+    carrito = Carrito(request)
+    prod = get_object_or_404(articulo, id=articulo_id)
+    carrito.eliminar(prod)  # Elimina todo el producto del carrito (no solo 1 cantidad)
+    return redirect("carrito")

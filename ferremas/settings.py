@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'ferremas.urls'
@@ -64,7 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'task.context_processor.total_carrito',
+                'task.context_processors.total_carrito',
             ],
         },
     },
@@ -131,3 +133,7 @@ MEDIA_URL = '/si2/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 días en segundos, por ejemplo
 SESSION_SAVE_EVERY_REQUEST = True  # Opcional, para que la sesión se renueve con cada request
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+
+
