@@ -164,7 +164,7 @@ body {
 .auth-box form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* espacio entre campos */
+  gap: 15px; 
 }
 
 .auth-box form input {
@@ -227,6 +227,32 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
   z-index: 10;
+  margin-bottom: 20px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-crear-categoria-container {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.btn-primario {
+    background-color: #7a4e2d;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primario:hover {
+    background-color: #492d17;
+    transform: scale(1.03);
 }
 
 
@@ -279,3 +305,154 @@ body {
 .articulo-card:hover {
     transform: scale(1.03);
 }
+
+
+/* Diseño de la creacion de categorias */
+
+.container-crear-categoria {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fdfdfd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.container-crear-categoria h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-categoria p {
+    margin-bottom: 15px;
+}
+
+.form-categoria input[type="text"],
+.form-categoria input[type="file"],
+.form-categoria textarea,
+.form-categoria select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    background-color: #7a4e2d;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #422610;
+}
+
+.form-error {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.btn-back:hover {
+    text-decoration: underline;
+}
+
+/* diseño del carrito */
+
+.carrito-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.carrito-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.carrito-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.carrito-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    flex-wrap: wrap;
+}
+
+.carrito-item-info {
+    flex: 2;
+}
+
+.carrito-item-img img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.carrito-item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-accion {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.btn-accion:hover {
+    transform: scale(1.05);
+}
+
+.azul { background-color: #007bff; }
+.rojo { background-color: #dc3545; }
+.verde { background-color: #28a745; }
+.gris { background-color: #6c757d; }
+
+.carrito-total {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.carrito-botones {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.carrito-vacio {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+}
+

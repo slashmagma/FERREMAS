@@ -1,41 +1,49 @@
 {% extends 'navbar.html' %}
+{% load static %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
+<div class="carrito-container">
+    <h1>Carrito de Compras</h1>
 
-<h1>Carrito de Compras</h1>
-<header> <a href="/Home/"> <button>Home</button></a></header>
+    <div class="carrito-header">
+        <a href="{% url 'Home' %}" class="btn-back">← Volver</a>
+    </div>
 
-{% if request.session.carrito.items %}
-{% for key, value in request.session.carrito.items %}
-<tr>
-    <td> Nombre: {{value.nombreart}}</td>
-    <td>ID: {{ value.articulo_id }}</td>
-    <td>Categoria: {{ value.tipo|default:"Sin tipo" }}</td>
-    <td>cantidad: {{ value.cantidad }}</td>
+    {% if request.session.carrito.items %}
+        <div class="carrito-items">
+            {% for key, value in request.session.carrito.items %}
+                <div class="carrito-item-card">
+                    <div class="carrito-item-info">
+                        <h3>{{ value.nombreart }}</h3>
+                        <p><strong>ID:</strong> {{ value.articulo_id }}</p>
+                        <p><strong>Categoría:</strong> {{ value.tipo|default:"Sin tipo" }}</p>
+                        <p><strong>Cantidad:</strong> {{ value.cantidad }}</p>
+                    </div>
+                    <div class="carrito-item-img">
+                        <img src="{{ value.imagen }}" alt="{{ value.nombreart }}">
+                    </div>
+                    <div class="carrito-item-actions">
+                        {% if value.articulo_id %}
+                            <a href="{% url 'mas' value.articulo_id %}" class="btn-accion azul">+1</a>
+                            <a href="{% url 'menos' value.articulo_id %}" class="btn-accion rojo">-1</a>
+                            <a href="{% url 'borrar' value.articulo_id %}" class="btn-accion gris">Eliminar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="carrito-vacio">Tu carrito está vacío.</p>
+    {% endif %}
 
-    <td><img src="{{value.imagen}}" alt="{{value.nombreart}}" style="width: 50px; height: 50px;"></td>
-
-    <td>
-        {% if value.articulo_id  %}
-            <a href="{% url 'mas' value.articulo_id %}" class="btn btn-primary">Agregar más</a>
-            <a href="{% url 'menos' value.articulo_id %}" class="btn btn-danger">Eliminar uno</a>
-            <a href="{% url 'borrar' value.articulo_id %}" class="btn btn-warning">Eliminar artículos</a>
-        {% endif %}
-            
-    </td>
-</tr>   
-{% endfor %}
-{% else %}
-    <p>Tu carrito está vacío.</p>
-{% endif %}
-<div style="padding-bottom: 10px;">
-    <tr>
-        <th scope="row">Total:</th>
-        <td colspan="2">$ {{total_factura}}</td>
-    </tr>
-    <a href="{% url 'cln' %}" class="btn btn-danger">Limpiar carrito</a>
-    <a href="{% url 'pagar_webpay' %}?monto={{ total_factura }}" class="btn btn-success">Pagar</a>
+    <div class="carrito-total">
+        <h3>Total: ${{ total_factura }}</h3>
+        <div class="carrito-botones">
+            <a href="{% url 'cln' %}" class="btn-accion rojo">Limpiar carrito</a>
+            <a href="{% url 'pagar_webpay' %}?monto={{ total_factura }}" class="btn-accion verde">Pagar</a>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

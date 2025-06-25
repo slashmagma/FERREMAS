@@ -1,32 +1,42 @@
 {% extends 'navbar.html' %}
+{% load static %}
 
 {% block body %}
-<a href="{% url 'detalle_categorias' nombre_cat  %}" class="btn btn-primary">volver </a>
-        <h1>{{ articulo.nombreart }}</h1>
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-    {% if articulo.imagen %}
-        <img src="{{ articulo.imagen.url }}" width="100" alt="Imagen del artículo">
-    {% else %}
-        <p>No hay imagen disponible</p>
-    {% endif %}
+<div class="container-crear-categoria">
+    <a href="{% url 'detalle_categorias' nombre_cat %}" class="btn-back">← Volver a {{ nombre_cat }}</a>
 
-    <p>{{ articulo.descripcion }}</p>
-        <form action="{% url 'eliminar_art' nombre_cat articulo.nombreart %}" method="POST">
-            {% csrf_token %}
-            <p>¿Estás seguro de que quieres eliminar este articulo?</p>
+    <div class="articulo-card">
+        <h2 class="text-cafe">{{ articulo.nombreart }}</h2>
+
+        {% if articulo.imagen %}
+            <img src="{{ articulo.imagen.url }}" alt="Imagen del artículo" class="imagen-categoria" style="max-width: 300px;">
+        {% else %}
+            <p class="categoria-descripcion">No hay imagen disponible</p>
+        {% endif %}
+
+        <p class="categoria-descripcion">{{ articulo.descripcion }}</p>
+
+        <p class="categoria-descripcion"><strong>Precio por unidad:</strong> ${{ articulo.valorunidad }}</p>
+        <p class="categoria-descripcion"><strong>Cantidad disponible:</strong> {{ articulo.cantidad }}</p>
+
+        <div class="carrito-botones">
+            <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn-accion verde">Agregar al carrito</a>
+
             {% if user.is_superuser or "@bodegero" in user.email %}
-                <button>
-                    Eliminar articulo
-                </button>
+                <a href="{% url 'añadir_art' nombre_cat articulo.nombreart %}" class="btn-accion azul">Añadir stock</a>
+                <a href="{% url 'restar_art' nombre_cat articulo.nombreart %}" class="btn-accion gris">Restar stock</a>
             {% endif %}
-        </form>
-        <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn btn-primary">Agregar al carrito</a>
+        </div>
 
-    <p>precio por unidad: {{ articulo.valorunidad }}</p>
-    <p>cantidad restante: {{articulo.cantidad}}</p>
-    {% if user.is_superuser or "@bodegero" in user.email %}
-        <button><a href="{% url 'restar_art' nombre_cat articulo.nombreart %}" class="btn btn-secondary">Restar</a></button>
-        <a href="{% url 'añadir_art' nombre_cat articulo.nombreart %}" class="btn btn-secondary">Añadir</a>
-    {% endif %}
-
+        {% if user.is_superuser or "@bodegero" in user.email %}
+            <form action="{% url 'eliminar_art' nombre_cat articulo.nombreart %}" method="POST" style="margin-top: 20px;">
+                {% csrf_token %}
+                <p class="form-error">¿Estás seguro de que quieres eliminar este artículo?</p>
+                <button type="submit" class="btn-accion rojo">Eliminar artículo</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
