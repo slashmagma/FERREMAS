@@ -48,6 +48,8 @@ urlpatterns = [
     path('webpay/', views.pagar_webpay, name='pagar_webpay'),
     path('webpay/retorno/', views.retorno, name='webpay_retorno'),
     path('Home/historial/', views.historial_compras, name='historial_compras'),
+    path('guardar_direccion/', views.guardar_direccion, name='guardar_direccion'),
+
 
 
   

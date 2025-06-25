@@ -12,6 +12,8 @@ from .Carrito import Carrito
 from .Forms import CustomAuthenticationForm
 import random 
 import requests
+from .models import Direccion 
+from django.contrib import messages
 #este es para poder personalizar el inicio de sesion de django
 # Create your views here.
 
@@ -239,6 +241,7 @@ def restar_articulocarro(request, articulo_id):
 
 def carrito(request):
     carrito_data = request.session.get('carrito', {})
+    direccion = Direccion.objects.filter(user=request.user).first()
     total = 0
 
     for key, item in carrito_data.items():
@@ -251,7 +254,8 @@ def carrito(request):
 
     return render(request, 'carrito.html', {
         'Carrito': carrito_data,
-        'total_factura': total
+        'total_factura': total,
+        'direccion_guardada': direccion
     })
     
 def pagar_webpay(request):
@@ -329,3 +333,33 @@ def retorno(request):
 def historial_compras(request):
     compras = Compra.objects.filter(user=request.user).order_by('-fecha')
     return render(request, 'historial_compras.html', {'compras': compras})
+
+def guardar_direccion(request):
+    if request.method == 'POST':
+        direccion_texto = request.POST.get('direccion')
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+
+        if direccion_texto and lat and lng:
+            # Intenta obtener la dirección existente para este usuario
+            try:
+                direccion_obj = Direccion.objects.get(user=request.user)
+                # Actualiza los datos
+                direccion_obj.direccion_texto = direccion_texto
+                direccion_obj.lat = float(lat)
+                direccion_obj.lng = float(lng)
+                direccion_obj.save()
+                messages.success(request, 'Dirección actualizada exitosamente.')
+            except Direccion.DoesNotExist:
+                # No existe, crea una nueva
+                Direccion.objects.create(
+                    user=request.user,
+                    direccion_texto=direccion_texto,
+                    lat=float(lat),
+                    lng=float(lng)
+                )
+                messages.success(request, 'Dirección guardada exitosamente.')
+        else:
+            messages.error(request, 'Faltan datos. No se pudo guardar la dirección.')
+
+    return redirect('carrito')

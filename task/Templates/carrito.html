@@ -3,20 +3,20 @@
 
 {% block body %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
-
 <div class="carrito-container">
     <h1>Carrito de Compras</h1>
 {% if messages %}
   {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">
-        {{ message }}
+      {{ message }}
     </div>
   {% endfor %}
 {% endif %}
     <div class="carrito-header">
         <a href="{% url 'Home' %}" class="btn-back">← Volver</a>
     </div>
-
+    {{ user.username }}
+    {{ user.direccion}}
     {% if request.session.carrito.items %}
         <div class="carrito-items">
             {% for key, value in request.session.carrito.items %}
@@ -37,18 +37,176 @@
                             <a href="{% url 'borrar' value.articulo_id %}" class="btn-accion gris">Eliminar</a>
                         {% endif %}
                     </div>
+                  Dirección: 
+                {% if direccion_guardada %}
+                    {{ direccion_guardada.direccion_texto }}
+                {% else %}
+                    Sin dirección
+                {% endif %}
+                <button id="mostrarDireccionBtn" type="button">Añadir dirección</button>
+
                 </div>
             {% endfor %}
+        </div>
+            
+
+            
+<script>
+  let map;
+  let marker;
+  let geocoder;
+
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: userLocation,
+          zoom: 15
+        });
+
+        marker = new google.maps.Marker({
+          position: userLocation,
+          map: map,
+          draggable: true,
+          title: "Estás aquí"
+        });
+
+        actualizarUbicacion(userLocation);
+
+        marker.addListener('dragend', function (event) {
+          actualizarUbicacion({
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          });
+        });
+
+        const input = document.getElementById('autocomplete');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function () {
+        const place = autocomplete.getPlace();
+        console.log("PLACE:", place);  // <-- Verifica esto
+
+        if (!place.geometry) return;
+
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        const direccion = place.formatted_address;
+
+        console.log("LAT:", lat, "LNG:", lng, "DIRECCION:", direccion); // <-- Verifica esto también
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(15);
+        marker.setPosition(place.geometry.location);
+
+        // Llama a actualizarUbicacion correctamente
+        actualizarUbicacion({
+            lat: lat,
+            lng: lng,
+            direccionTexto: direccion
+        });
+        });
+
+
+        map.addListener('click', function (event) {
+        const lat = event.latLng.lat();
+        const lng = event.latLng.lng();
+
+        marker.setPosition(event.latLng);
+        actualizarUbicacion({
+            lat: lat,
+            lng: lng
+        });
+        });
+      });
+    }
+  }
+
+    function actualizarUbicacion({lat, lng, direccionTexto = null}) {
+    document.getElementById("lat").value = lat;
+    document.getElementById("lng").value = lng;
+
+    if (direccionTexto) {
+        document.getElementById("direccion").value = direccionTexto;
+        document.getElementById("direccionTexto").textContent = direccionTexto;
+    } else {
+      geocoder.geocode({ location: { lat, lng } }, function (results, status) {
+        if (status === "OK" && results[0]) {
+          const direccion = results[0].formatted_address;
+          document.getElementById("direccion").value = direccion;
+          document.getElementById("direccionTexto").textContent = direccion;
+        } else {
+          document.getElementById("direccionTexto").textContent = "Dirección no encontrada";
+        }
+      });
+    }
+  }
+</script>
+
+<!-- API de Google con callback -->
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIdbfN1sO2yWJyS0tq9rJ2r-8Pmr2_SJw&libraries=places&callback=initMap">
+</script>
+<script>
+  document.getElementById("mostrarDireccionBtn").addEventListener("click", function () {
+    document.getElementById("contenedorDireccion").style.display = "block";
+    this.style.display = "none"; // Oculta el botón después de hacer clic
+  });
+
+  // Después de enviar el formulario, ocultamos el contenedor
+  document.getElementById("formDireccion").addEventListener("submit", function () {
+    document.getElementById("contenedorDireccion").style.display = "none";
+    document.getElementById("mostrarDireccionBtn").style.display = "block";
+  });
+</script>
+
+            <!-- Mapa y dirección seleccionada -->
+            <div id="contenedorDireccion" style="display: none;">
+                <div id="map" style="height: 400px; width: 100%; margin-top: 10px;"></div>
+                <div id="direccionMostrada" style="margin-top: 10px; padding: 10px; border: 1px solid #ccc;">
+                    Dirección seleccionada: <span id="direccionTexto">Ninguna</span>
+                </div>
+            
+
+            
+
+            <form id="formDireccion" method="POST" action="{% url 'guardar_direccion' %}">
+                {% csrf_token %}
+                <input type="hidden" name="direccion" id="direccion">
+                <input type="hidden" name="lat" id="lat">
+                <input type="hidden" name="lng" id="lng">
+                <button type="submit">Guardar Dirección</button>
+            </form>
+
+        </div>
+
+          
         </div>
     {% else %}
         <p class="carrito-vacio">Tu carrito está vacío.</p>
     {% endif %}
 
+    
+
     <div class="carrito-total">
         <h3>Total: ${{ total_factura }}</h3>
         <div class="carrito-botones">
             <a href="{% url 'cln' %}" class="btn-accion rojo">Limpiar carrito</a>
+             {% if direccion_guardada %}
             <a href="{% url 'pagar_webpay' %}?monto={{ total_factura }}" class="btn-accion verde">Pagar</a>
+            {% else %}
+                <p style="color: red; font-weight: bold;">Debes añadir una dirección antes de pagar</p>
+            {% endif %}
+
+            
         </div>
     </div>
 </div>
