@@ -1,4 +1,5 @@
 from decimal import Decimal
+from django.contrib import messages
 class Carrito:
     def __init__(self, request):
         self.request = request
@@ -11,20 +12,33 @@ class Carrito:
             self.carrito = carrito
     
     def agregar(self, articulo):
-        id=str(articulo.id)
+        id = str(articulo.id)
+
+        # Si el artículo no está en el carrito, lo agregamos con cantidad 1
         if id not in self.carrito.keys():
-            self.carrito[id] = {
-                "articulo_id": articulo.id,
-                "tipo": articulo.Tipo,
-                "nombreart": articulo.nombreart,
-                "acumulado": float(articulo.valorunidad),
-                "cantidad": 1,
-                "imagen": articulo.imagen.url if articulo.imagen else None
-            }
+            if articulo.cantidad > 0:
+                self.carrito[id] = {
+                    "articulo_id": articulo.id,
+                    "tipo": articulo.Tipo,
+                    "nombreart": articulo.nombreart,
+                    "acumulado": float(articulo.valorunidad),
+                    "cantidad": 1,
+                    "imagen": articulo.imagen.url if articulo.imagen else None
+                }
         else:
-            self.carrito[id]["cantidad"] += 1 
-            self.carrito[id]["acumulado"] = float(articulo.valorunidad)
+            # Ya existe en el carrito, validamos que no exceda el stock
+            cantidad_actual = self.carrito[id]["cantidad"]
+            if cantidad_actual < articulo.cantidad:
+                self.carrito[id]["cantidad"] += 1
+                self.carrito[id]["acumulado"] = float(articulo.valorunidad)
+            else:
+                
+                  messages.warning(
+            self.request,
+            f"Ya agregaste todas las unidades disponibles de '{articulo.nombreart}'.")
+
         self.guardar_carrito()
+
         
     def guardar_carrito(self):
         self.session["carrito"] = self.carrito

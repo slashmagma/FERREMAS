@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>hola</p>
-</body>
-</html>
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block body %}
+
+    <h1>Perfil de Usuario</h1>
+    <p><strong>Nombre:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Fecha de Registro:</strong> {{ user.date_joined }}</p>
+    <p><strong>Último Inicio de Sesión:</strong> {{ user.last_login }}</p>
+    <p><strong>Roles:</strong> {% if user.is_superuser %} Administrador {% elif "@bodegero" in user.email  %} Usuario {% else %} cliente {% endif %}</p>
+    <a href="{% url 'logout' %}">cerrar session</a>
+{% endblock %}

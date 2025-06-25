@@ -6,7 +6,13 @@
 
 <div class="carrito-container">
     <h1>Carrito de Compras</h1>
-
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
     <div class="carrito-header">
         <a href="{% url 'Home' %}" class="btn-back">← Volver</a>
     </div>

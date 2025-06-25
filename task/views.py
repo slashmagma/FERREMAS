@@ -194,7 +194,7 @@ def añadir_articulo(request, nombre_cat, nombre_art):
 
 @login_required
 def eliminar_articulo(request, nombre_cat, nombre_art):
-    Articulo = get_object_or_404(articulo, nombreart=nombre_art, user=request.user)
+    Articulo = get_object_or_404(articulo, nombreart=nombre_art)
     if request.method == 'POST':
         Articulo.delete()
         return redirect('detalle_categorias', nombre_cat=nombre_cat)
@@ -210,19 +210,19 @@ def Perfil(request):
 
 def añadir_carrito(request, nombre_cat, nombre_art):
     carrito= Carrito(request)
-    Articulo= articulo.objects.get(nombreart=nombre_art, user=request.user)
+    Articulo= articulo.objects.get(nombreart=nombre_art)
     carrito.agregar(Articulo)
     return redirect('detalle_categorias', nombre_cat=nombre_cat)
 
 def mas(request, articulo_id):
     carrito = Carrito(request)
-    art = articulo.objects.get(id=articulo_id, user=request.user)
+    art = articulo.objects.get(id=articulo_id)
     carrito.agregar(art)
     return redirect('carrito')
 
 def eliminar_artcarro(request, articulo_id):
    carrito = Carrito(request)
-   art = articulo.objects.get(id=articulo_id, user=request.user)
+   art = articulo.objects.get(id=articulo_id)
    carrito.eliminar(art)
    return redirect('carrito')
 
@@ -233,7 +233,7 @@ def limpiarcarrito(request):
 
 def restar_articulocarro(request, articulo_id):
     carrito = Carrito(request)
-    art = articulo.objects.get(id=articulo_id, user=request.user)
+    art = articulo.objects.get(id=articulo_id)
     carrito.eliminar_producto(art)
     return redirect('carrito')
 
@@ -287,7 +287,7 @@ def pagar_webpay(request):
 
 
 @csrf_exempt
-@login_required
+
 def retorno(request):
     if request.method == 'POST':
         token_ws = request.POST.get('token_ws')

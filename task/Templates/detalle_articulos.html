@@ -22,7 +22,11 @@
         <p class="categoria-descripcion"><strong>Cantidad disponible:</strong> {{ articulo.cantidad }}</p>
 
         <div class="carrito-botones">
-            <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn-accion verde">Agregar al carrito</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn-accion verde">Agregar al carrito</a>
+            {% else %}
+                <p href="{% url 'singup'  %}" class="btn-accion verde" >Inicia sesión para agregar al carrito</p>
+            {% endif %}
 
             {% if user.is_superuser or "@bodegero" in user.email %}
                 <a href="{% url 'añadir_art' nombre_cat articulo.nombreart %}" class="btn-accion azul">Añadir stock</a>
