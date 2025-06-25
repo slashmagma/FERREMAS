@@ -1,14 +1,26 @@
 {% extends 'navbar.html' %}
+{% load static %}
 
 {% block body %}
-    <a href="{% url 'categorias' %}" class="btn btn-primary">volver</a>
-    <p>1</p>
-    {{error}}
-    <form method="POST" enctype="multipart/form-data">
+<link rel="stylesheet" href="{% static 'style.css' %}">
+
+<div class="container-crear-categoria">
+
+    <a href="{% url 'categorias' %}" class="btn-back">← Volver a categorías</a>
+
+    <h2>Crear nueva categoría</h2>
+
+    {% if error %}
+        <div class="form-error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" class="form-categoria">
         {% csrf_token %}
         {{ Form.as_p }}
-        <button type="submit">Guardar</button>
+        <button type="submit" class="btn-submit">Guardar</button>
     </form>
 
-
+</div>
 {% endblock %}
