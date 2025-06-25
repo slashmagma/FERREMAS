@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from .Carrito import Carrito
 from .Forms import CustomAuthenticationForm
 import random 
-#import requests
+import requests
 #este es para poder personalizar el inicio de sesion de django
 # Create your views here.
 
@@ -314,7 +314,7 @@ def retorno(request):
                 user=request.user,
                 monto=data.get('amount', 0),
                 estado='pagado',
-                detalle=str(data)  # o puedes guardar JSON si quieres
+                detalle=str(data)  
             )
             mensaje = 'Pago completado exitosamente. ¡Gracias por su compra!'
         elif estado in ['voided', 'cancelled']:
