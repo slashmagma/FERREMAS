@@ -2,12 +2,41 @@
 {% load static %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
 
-    <h1>Perfil de Usuario</h1>
-    <p><strong>Nombre:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Fecha de Registro:</strong> {{ user.date_joined }}</p>
-    <p><strong>Último Inicio de Sesión:</strong> {{ user.last_login }}</p>
-    <p><strong>Roles:</strong> {% if user.is_superuser %} Administrador {% elif "@bodegero" in user.email  %} Usuario {% else %} cliente {% endif %}</p>
-    <a href="{% url 'logout' %}">cerrar session</a>
+<div class="container-crear-categoria centered-box">
+    <a href="javascript:history.back()" class="btn-back">← Volver</a>
+
+    <!-- Imagen de perfil circular según el rol -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        {% if user.is_superuser %}
+            <img src="{% static 'fotos/gerente.png' %}" alt="Admin" class="user-icon">
+        {% elif "@bodegero" in user.email %}
+            <img src="{% static 'fotos/trabajador.png' %}" alt="Bodeguero" class="user-icon">
+        {% else %}
+            <img src="{% static 'fotos/hombre.png' %}" alt="Cliente" class="user-icon">
+        {% endif %}
+    </div>
+
+    <h2 class="text-cafe">Perfil de Usuario</h2>
+
+    <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+    <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
+    <p><strong>Fecha de registro:</strong> {{ user.date_joined|date:"d/m/Y H:i" }}</p>
+    <p><strong>Último inicio de sesión:</strong> {{ user.last_login|date:"d/m/Y H:i" }}</p>
+
+    <p><strong>Rol:</strong> 
+        {% if user.is_superuser %}
+            Administrador
+        {% elif "@bodegero" in user.email %}
+            Usuario con permisos
+        {% else %}
+            Cliente
+        {% endif %}
+    </p>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <a href="{% url 'logout' %}" class="btn-primario">Cerrar sesión</a>
+    </div>
+</div>
 {% endblock %}

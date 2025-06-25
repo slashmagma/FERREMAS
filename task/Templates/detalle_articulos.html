@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'style.css' %}">
 
 <div class="container-crear-categoria">
-    <a href="{% url 'detalle_categorias' nombre_cat %}" class="btn-back">← Volver a {{ nombre_cat }}</a>
+    <a href="javascript:history.back()" class="btn-back">← Volver</a>
 
     <div class="articulo-card">
         <h2 class="text-cafe">{{ articulo.nombreart }}</h2>
@@ -23,9 +23,9 @@
 
         <div class="carrito-botones">
             {% if user.is_authenticated %}
-                <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn-accion verde">Agregar al carrito</a>
+                <a href="{% url 'Mas' nombre_cat articulo.nombreart %}" class="btn-primario">Agregar al carrito</a>
             {% else %}
-                <p href="{% url 'singup'  %}" class="btn-accion verde" >Inicia sesión para agregar al carrito</p>
+                <a href="{% url 'singup'  %}" class="btn-primario" >Inicia sesión para agregar al carrito</a>
             {% endif %}
 
             {% if user.is_superuser or "@bodegero" in user.email %}
