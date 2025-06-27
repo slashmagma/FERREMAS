@@ -14,8 +14,7 @@ import random
 import requests
 from .models import Direccion 
 from django.contrib import messages
-#este es para poder personalizar el inicio de sesion de django
-# Create your views here.
+
 
 
 
@@ -56,9 +55,11 @@ def crearcuenta(request):
         form = CustomUserCreationForm(request.POST, request_user=request.user)
         if form.is_valid():
             try:
-                user = form.save()
-                login(request, user)
-                return redirect('Home')
+                form.save()
+                
+                messages.success(request, 'Cuenta creada exitosamente.')
+                
+                return redirect('crearcuenta')
             except:
                 return render(request, 'creacion_cuentas.html', {
                     'form': CustomUserCreationForm(),
@@ -160,12 +161,16 @@ def eliminar_categoria(request, nombre_cat):
 
 
 def detalle_Articulo (request, nombre_cat, nombre_art):
-    articulo_obj = get_object_or_404(articulo, nombreart=nombre_art)
+    if articulo.objects.filter(nombreart=nombre_art).exists():
+        articulo_obj = get_object_or_404(articulo, nombreart=nombre_art)
 
-    return render(request, 'detalle_articulos.html', {
-    'articulo': articulo_obj,
-    'nombre_cat': nombre_cat
-})
+        return render(request, 'detalle_articulos.html', {
+        'articulo': articulo_obj,
+        'nombre_cat': nombre_cat
+        })
+    else:
+        return redirect('detalle_categorias', nombre_cat=nombre_cat)  
+
 
 def restar_Articulo(request, nombre_cat, nombre_art):
     try:
@@ -238,6 +243,7 @@ def restar_articulocarro(request, articulo_id):
     art = articulo.objects.get(id=articulo_id)
     carrito.eliminar_producto(art)
     return redirect('carrito')
+    
 
 def carrito(request):
     carrito_data = request.session.get('carrito', {})

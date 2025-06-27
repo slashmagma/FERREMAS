@@ -30,7 +30,9 @@
 
             {% if user.is_superuser or "@bodegero" in user.email %}
                 <a href="{% url 'añadir_art' nombre_cat articulo.nombreart %}" class="btn-accion azul">Añadir stock</a>
+                {% if articulo.cantidad %}
                 <a href="{% url 'restar_art' nombre_cat articulo.nombreart %}" class="btn-accion gris">Restar stock</a>
+                {% endif %}
             {% endif %}
         </div>
 

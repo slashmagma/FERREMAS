@@ -7,9 +7,14 @@
 <div class="auth-background">
     
   <div class="auth-container">
-
-    <!-- Sección izquierda con botón para ir al login -->
-  
+    <div>{% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+    {% endfor %}
+    {% endif %}</div>
+    
 
     <!-- Formulario de registro -->
     <div class="auth-box">
@@ -19,11 +24,13 @@
         <div class="alert alert-danger">{{ error }}</div>
       {% endif %}
 
-      <form action="/singup/" method="post">
+      <form action="{% url 'crearcuenta' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        
         <button class="btn btn-primary auth-button">crear</button>
       </form>
+      
     </div>
 
   </div>
